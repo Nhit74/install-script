@@ -48,7 +48,7 @@ fi
 echo 'wellcome to arch-chroot'
 echo 'select your area and loaction'
 read -p "Area: " area
-read -p "Location" loaction
+read -p "Location: " loaction
 ln -sf /usr/share/zoneinfo/$area/$loaction /etc/loacltime
 hwclock --systohc
 echo 'time succesfuly selected'
@@ -59,7 +59,7 @@ echo 'select your locales'
 read -p "type your locale: " loacle
 echo LANG=$locale >> /etc/loacle.conf
 echo 'select your keyboard lenguage'
-type -p "keyboard: " keys
+read -p "keyboard: " keys
 echo KEYMAP=$keys > /etc/vconsole.conf
 echo keyboard succesfull configured
 sleap 1
@@ -69,11 +69,14 @@ echo $host > /etc/hostname
 echo create a root passwd
 passwd
 clear
+echo ""
 echo "Bootloader (grub)"
+echo ""
+sleep 2
 pacman -S grub efibootmgr
 grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB
 mkdir /boot/grub
 grub-mkconfig -o /boot/grub/grub.cfg
-sleep 1
+sleep 3
+echo ""
 echo "Grub installed succesfuly"
-
