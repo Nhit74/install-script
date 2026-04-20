@@ -34,15 +34,18 @@ then
   mount --mkdir $boot /mnt/boot
   echo "Syestem mounted"
   echo "Select your mirrors"
+  sleep 5
   nano /etc/pacman.d/mirrorlist
   echo "Mirrors selected"
   read -p "Select your kernel: " kernel
   pacstrap -K /mnt base $kernel linux-firmware
   echo "Base sistem installed"
+  sleep 5
   genfstab -U /mnt >> /mnt/etc/fstab
   echo "fstab created remeaber to check it"
   cp install.sh  /mnt/install.sh
   echo 'run the script another time'
+  sleep 5
   arch-chroot /mnt
 fi
 echo 'wellcome to arch-chroot'
@@ -58,6 +61,7 @@ locale-gen
 echo 'select your locales'
 read -p "type your locale: " loacle
 echo LANG=$locale >> /etc/loacle.conf
+sleep 3
 echo 'select your keyboard lenguage'
 read -p "keyboard: " keys
 echo KEYMAP=$keys > /etc/vconsole.conf
@@ -79,4 +83,4 @@ mkdir /boot/grub
 grub-mkconfig -o /boot/grub/grub.cfg
 sleep 3
 echo ""
-echo "Grub installed succesfuly"
+echo "Grub installed"
