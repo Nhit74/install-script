@@ -105,3 +105,4 @@ then
   passwd $user
   echo "user created"
   echo "Now you have arch linux! Exit chroot and reboot."
+fi
