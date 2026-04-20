@@ -34,18 +34,18 @@ then
   mount --mkdir $boot /mnt/boot
   echo "Syestem mounted"
   echo "Select your mirrors"
-  sleep 5
+  sleep 2
   nano /etc/pacman.d/mirrorlist
   echo "Mirrors selected"
   read -p "Select your kernel: " kernel
   pacstrap -K /mnt base $kernel linux-firmware
   echo "Base sistem installed"
-  sleep 5
+  sleep 2
   genfstab -U /mnt >> /mnt/etc/fstab
   echo "fstab created remeaber to check it"
   cp install.sh  /mnt/install.sh
   echo 'run the script another time'
-  sleep 5
+  sleep 2
   arch-chroot /mnt
 fi
 echo 'wellcome to arch-chroot'
@@ -84,3 +84,24 @@ grub-mkconfig -o /boot/grub/grub.cfg
 sleep 3
 echo ""
 echo "Grub installed"
+sleep 2
+echo "Recomended software"
+echo 1- networkmanager sudo nano
+echo 2- no more software
+read -p "Chose one option: " soft
+if [ $soft -eq 1 ]
+then
+  pacman -S networkmanager sudo nano
+fi
+clear
+echo "Please create a user"
+echo 1- "Yes, I want a user."
+echo 2- "No, I don't want a user"
+read -p "Chose one or two: " YoN
+if [ $YoN -eq 1 ]
+then
+  read -p "Username: " user
+  useradd -m -s /bin/bash $user
+  passwd $user
+  echo "user created"
+  echo "Now you have arch linux! Exit chroot and reboot."
