@@ -2,10 +2,10 @@
 
 echo INSTALL_ARCH
 echo ""
-echo select if you are in chroot or not
+echo "select if you are in chroot or not"
 echo 1- NO chroot
 echo 2- chroot
-
+read -p "Chose one or two"
 if [ $place == 1 ]
 then
   timedatectl
