@@ -2,11 +2,11 @@
 
 echo INSTALL_ARCH
 echo ""
-echo "select if you are in chroot or not"
+echo "select if you are in chroot or not: " place
 echo 1- NO chroot
 echo 2- chroot
 read -p "Chose one or two"
-if [ $place == 1 ]
+if [ $place -eq 1 ]
 then
   timedatectl
 
@@ -19,7 +19,7 @@ then
   echo 1- yes
   echo 2- no
   read -p "Type 1 or 2: " swap
-  if [ $swap == 1 ]
+  if [ $swap -eq 1 ]
   then
     read -p "Where is your swap partition? " swap_route
     mkswap $swap_route
