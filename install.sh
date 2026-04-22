@@ -105,4 +105,14 @@ then
   passwd $user
   echo "user created"
   echo "Now you have arch linux! Exit chroot and reboot."
+  clear
+  echo "Do you want to be sudoer?"
+  echo 1- "Yes, I want to be sudoer."
+  echo 2- "No, I don't want to be sudoer."
+  read -p "Chose one or two: " SU
+  if [ $SU -eq 1 ]
+    usermod -aG wheel $user
+    echo "Modify the sudoers file and uncoment the wheel group"
+    EDITOR=nano sudo visudo
+  fi
 fi
