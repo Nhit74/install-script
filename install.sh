@@ -48,29 +48,29 @@ then
   echo 'run the script another time'
   sleep 2
   arch-chroot /mnt
-  ./install.sh
 fi
 echo 'wellcome to arch-chroot'
 echo 'select your area and loaction'
 read -p "Area: " area
 read -p "Location: " loaction
-ln -sf /usr/share/zoneinfo/$area/$loaction /etc/loacltime
+ln -sf /usr/share/zoneinfo/$area/$loaction /etc/localtime
 hwclock --systohc
 echo 'time succesfuly selected'
 sleep 1
 clear
 locale-gen
 echo 'select your locales'
-read -p "type your locale: " loacle
-echo LANG=$locale >> /etc/loacle.conf
+echo "Maiby es_ES.UTF-8"
+read -p "type your locale: " locale
+echo LANG=$locale >> /etc/locale.conf
 sleep 3
-echo 'select your keyboard lenguage'
+echo "select your keyboard lenguage"
 read -p "keyboard: " keys
 echo KEYMAP=$keys > /etc/vconsole.conf
-echo keyboard succesfull configured
+echo "keyboard succesfull configured"
 sleap 1
 clear
-read -p 'type your hostname: ' host
+read -p "type your hostname: " host
 echo $host > /etc/hostname
 echo create a root passwd
 passwd
@@ -94,6 +94,7 @@ read -p "Chose one option: " soft
 if [ $soft -eq 1 ]
 then
   pacman -S networkmanager sudo nano
+  systemctl enable NetworkManager
 fi
 clear
 echo "Please create a user"
@@ -114,7 +115,7 @@ then
   read -p "Chose one or two: " SU
   if [ $SU -eq 1 ]
     usermod -aG wheel $user
-    echo "Modify the sudoers file and uncoment the wheel group"
-    EDITOR=nano sudo visudo
+    echo "%wheel ALL=(ALL:ALL) ALL" > /etc/sudoers.d/wheel
+    chmod 440 /etc/sudoers.d/wheel
   fi
 fi
