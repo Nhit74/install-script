@@ -32,17 +32,28 @@ then
   echo "Mounting the sistem"
   mount $linux /mnt
   mount --mkdir $boot /mnt/boot
-  echo "Syestem mounted"
+  echo "System mounted"
   echo "Select your mirrors"
   sleep 2
   nano /etc/pacman.d/mirrorlist
   echo "Mirrors selected"
-  read -p "Select your kernel: " kernel
+  clear
+  echo ""
+  echo "1- Linux"
+  echo "2- Linux-zen"
+  echo "3- Linux-lts"
+  read -p "Select your kernel: " kopt
+  case "$kopt" in
+    1) kernel="linux" ;;
+    2) kernel="linux-lts" ;;
+    3) kernel="linux-zen" ;;
+    *) kernel="linux" ;;
+  esac
   pacstrap -K /mnt base $kernel linux-firmware
   echo "Base sistem installed"
   sleep 2
   genfstab -U /mnt >> /mnt/etc/fstab
-  echo "fstab created remeaber to check it"
+  echo "fstab created, check it"
   cp install.sh  /mnt/install.sh
   chmod +x /mnt/install.sh
   echo 'run the script another time'
@@ -50,7 +61,7 @@ then
   arch-chroot /mnt
 fi
 echo 'wellcome to arch-chroot'
-echo 'select your area and loaction'
+echo 'select your area and location'
 read -p "Area: " area
 read -p "Location: " loaction
 ln -sf /usr/share/zoneinfo/$area/$loaction /etc/localtime
@@ -60,7 +71,7 @@ sleep 1
 clear
 locale-gen
 echo 'select your locales'
-echo "Maiby es_ES.UTF-8"
+echo "es_ES.UTF-8"
 read -p "type your locale: " locale
 echo LANG=$locale >> /etc/locale.conf
 sleep 3
@@ -68,7 +79,7 @@ echo "select your keyboard lenguage"
 read -p "keyboard: " keys
 echo KEYMAP=$keys > /etc/vconsole.conf
 echo "keyboard succesfull configured"
-sleap 1
+sleep 1
 clear
 read -p "type your hostname: " host
 echo $host > /etc/hostname
