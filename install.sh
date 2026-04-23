@@ -6,7 +6,7 @@ echo "select if you are in chroot or not"
 echo 1- NO chroot
 echo 2- chroot
 read -p "Chose one or two: " place
-if [ $place -eq 1 ]
+if [ "$place" -eq 1 ]
 then
   timedatectl
 
@@ -19,7 +19,7 @@ then
   echo 1- yes
   echo 2- no
   read -p "Type 1 or 2: " swap
-  if [ $swap -eq 1 ]
+  if [ "$swap" -eq 1 ]
   then
     read -p "Where is your swap partition? " swap_route
     mkswap $swap_route
@@ -91,7 +91,7 @@ echo "Recomended software"
 echo 1- networkmanager sudo nano
 echo 2- no more software
 read -p "Chose one option: " soft
-if [ $soft -eq 1 ]
+if [ "$soft" -eq 1 ]
 then
   pacman -S networkmanager sudo nano
   systemctl enable NetworkManager
@@ -101,7 +101,7 @@ echo "Please create a user"
 echo 1- "Yes, I want a user."
 echo 2- "No, I don't want a user"
 read -p "Chose one or two: " YoN
-if [ $YoN -eq 1 ]
+if [ "$YoN" -eq 1 ]
 then
   read -p "Username: " user
   useradd -m -s /bin/bash $user
@@ -113,7 +113,7 @@ then
   echo 1- "Yes, I want to be sudoer."
   echo 2- "No, I don't want to be sudoer."
   read -p "Chose one or two: " SU
-  if [ $SU -eq 1 ]
+  if [ "$SU" -eq 1 ]
     usermod -aG wheel $user
     echo "%wheel ALL=(ALL:ALL) ALL" > /etc/sudoers.d/wheel
     chmod 440 /etc/sudoers.d/wheel
