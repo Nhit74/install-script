@@ -80,3 +80,4 @@ clear
 usermod -aG wheel Admin
 echo "Modify the sudoers file and uncoment the wheel group"
 EDITOR=nano sudo visudo
+echo "All done"
