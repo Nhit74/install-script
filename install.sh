@@ -114,6 +114,7 @@ then
   echo 2- "No, I don't want to be sudoer."
   read -p "Chose one or two: " SU
   if [ "$SU" -eq 1 ]
+  then
     usermod -aG wheel $user
     echo "%wheel ALL=(ALL:ALL) ALL" > /etc/sudoers.d/wheel
     chmod 440 /etc/sudoers.d/wheel
