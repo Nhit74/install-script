@@ -44,9 +44,11 @@ then
   genfstab -U /mnt >> /mnt/etc/fstab
   echo "fstab created remeaber to check it"
   cp install.sh  /mnt/install.sh
+  chmod +x /mnt/install.sh
   echo 'run the script another time'
   sleep 2
   arch-chroot /mnt
+  ./install.sh
 fi
 echo 'wellcome to arch-chroot'
 echo 'select your area and loaction'
