@@ -32,12 +32,12 @@ then
   sleep 2
   genfstab -U /mnt >> /mnt/etc/fstab
   echo "fstab created remeaber to check it"
-  cp install.sh  /mnt/install.sh
-  chmod +x /mnt/install.sh
+  cp FastSetup.sh  /mnt/FastSetup.sh
+  chmod +x /mnt/FastSetup.sh
   echo 'run the script another time'
   sleep 2
   arch-chroot /mnt
-  ./install.sh
+  ./FastSetup.sh
 fi
 echo 'wellcome to arch-chroot'
 ln -sf /usr/share/zoneinfo/Europe/Madrid /etc/loacltime
