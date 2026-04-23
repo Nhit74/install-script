@@ -6,7 +6,7 @@ echo "select if you are in chroot or not"
 echo 1- NO chroot
 echo 2- chroot
 read -p "Chose one or two: " place
-if [ $place -eq 1 ]
+if [ "$place" -eq 1 ]
 then
   timedatectl
 
@@ -37,16 +37,15 @@ then
   echo 'run the script another time'
   sleep 2
   arch-chroot /mnt
-  ./FastSetup.sh
 fi
 echo 'wellcome to arch-chroot'
-ln -sf /usr/share/zoneinfo/Europe/Madrid /etc/loacltime
+ln -sf /usr/share/zoneinfo/Europe/Madrid /etc/localtime
 hwclock --systohc
 echo 'time succesfuly selected'
 sleep 1
 clear
 locale-gen
-echo LANG=ES_es.UTF-8 >> /etc/loacle.conf
+echo LANG=es_ES.UTF-8 >> /etc/locale.conf
 sleep 3
 echo 'select your keyboard lenguage'
 echo KEYMAP=es > /etc/vconsole.conf
@@ -61,7 +60,7 @@ echo ""
 echo "Bootloader (grub)"
 echo ""
 sleep 2
-pacman -S grub efibootmgr
+pacman -Sy grub efibootmgr
 grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
 mkdir /boot/grub
 grub-mkconfig -o /boot/grub/grub.cfg
@@ -79,6 +78,6 @@ passwd Admin
 echo "user created"
 clear
 usermod -aG wheel Admin
-echo "Modify the sudoers file and uncoment the wheel group"
-EDITOR=nano sudo visudo
+echo "%wheel ALL=(ALL:ALL) ALL" > /etc/sudoers.d/wheel
+chmod 440 /etc/sudoers.d/wheel
 echo "All done"
