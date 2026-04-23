@@ -70,6 +70,7 @@ echo ""
 echo "Grub installed"
 sleep 2
 pacman -S networkmanager sudo nano
+systemctl enable NetworkManager
 sleep 2
 clear
 echo "Please create a user"
