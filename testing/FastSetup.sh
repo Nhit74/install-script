@@ -1,8 +1,8 @@
-#!/bib/bash
+#!/bin/bash
 clear
-echo "#########################################"
-echo "############ ARCH FAST SETUP ############"
-echo "#########################################"
+echo "  #########################################"
+echo "  ############ ARCH FAST SETUP ############"
+echo "  #########################################"
 echo ""
 echo -e '\e[36m
                        -`
@@ -28,7 +28,7 @@ echo -e '\e[36m
 echo ""
 echo "Are you running in chroot?"
 read -p "Type [y/n]" CR
-if [ "$CR" = y ]
+if [ "$CR" = n ]
 then
   if [ -d /sys/firmware/efi ]
   then
