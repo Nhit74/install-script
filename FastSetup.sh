@@ -9,34 +9,42 @@ read -p "Chose one or two: " place
 if [ "$place" -eq 1 ]
 then
   timedatectl
-
-  fdisk -l
-  read -p "Select the media for make partitions: " media
-  fdisk $media
-  read -p "Select your boot partition: " boot
-  read -p "Select your Linux partition: " linux
-  mkfs.fat -F 32 $boot
-  mkfs.ext4 $linux
-  echo 'Format done'
-  clear
-  echo "Mounting the sistem"
-  mount $linux /mnt
-  mount --mkdir $boot /mnt/boot
-  echo "Syestem mounted"
-  echo "Select your mirrors"
-  sleep 2
-  nano /etc/pacman.d/mirrorlist
-  echo "Mirrors selected"
-  pacstrap -K /mnt base linux linux-firmware
-  echo "Base sistem installed"
-  sleep 2
-  genfstab -U /mnt >> /mnt/etc/fstab
-  echo "fstab created remeaber to check it"
-  cp FastSetup.sh  /mnt/FastSetup.sh
-  chmod +x /mnt/FastSetup.sh
-  echo 'run the script another time'
-  sleep 2
-  arch-chroot /mnt
+  if [ -d /sys/firmware/efi ]
+  then
+    lsblk
+    read -p "Select the media for make partitions: " media
+    fdisk $media
+    lsblk
+    read -p "Select your boot partition: " boot
+    read -p "Select your Linux partition: " linux
+    mkfs.fat -F 32 $boot
+    mkfs.ext4 $linux
+    echo 'Format done'
+    lsblk
+    read -p "Press any key..." sahjad
+    clear
+    echo "Mounting the sistem"
+    mount $linux /mnt
+    mount --mkdir $boot /mnt/boot
+    echo "Syestem mounted"
+    echo "Select your mirrors"
+    sleep 2
+    nano /etc/pacman.d/mirrorlist
+    echo "Mirrors selected"
+    pacstrap -K /mnt base linux linux-firmware
+    echo "Base sistem installed"
+    sleep 2
+    genfstab -U /mnt >> /mnt/etc/fstab
+    echo "fstab created remeaber to check it"
+    cp FastSetup.sh  /mnt/FastSetup.sh
+    chmod +x /mnt/FastSetup.sh
+    echo 'run the script another time'
+    sleep 2
+    arch-chroot /mnt
+  else
+  echo "You are in legacy mode, change to uefi into the firmware"
+  read -p "Press any key..." jsbdsa
+  fi
 fi
 echo 'wellcome to arch-chroot'
 ln -sf /usr/share/zoneinfo/Europe/Madrid /etc/localtime
