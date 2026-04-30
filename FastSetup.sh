@@ -8,9 +8,9 @@ echo 2- chroot
 read -p "Chose one or two: " place
 if [ "$place" -eq 1 ]
 then
-  timedatectl
   if [ -d /sys/firmware/efi ]
   then
+    timedatectl
     lsblk
     read -p "Select the media for make partitions: " media
     fdisk $media
@@ -44,6 +44,15 @@ then
   else
   echo "You are in legacy mode, change to uefi into the firmware"
   read -p "Press any key..." jsbdsa
+  echo "[ 1 ] Reboot"
+  echo "[ 2 ] Shutdown"
+  read -p "Choose an option: " option
+  if [ "$option" -eq 1 ]
+  then
+    reboot
+  elif [ "$option" -eq 2 ]
+  then
+    shutdown -h now
   fi
 fi
 echo 'wellcome to arch-chroot'
