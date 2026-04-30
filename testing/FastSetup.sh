@@ -27,7 +27,7 @@ echo -e '\e[36m
 \e[0m'
 echo ""
 echo "Are you running in chroot?"
-read -p "Type [y/n]" CR
+read -p "Type [y/n] " CR
 if [ "$CR" = n ]
 then
   if [ -d /sys/firmware/efi ]
@@ -91,7 +91,6 @@ else
   locale-gen
   echo LANG=es_ES.UTF-8 >> /etc/locale.conf
   sleep 3
-  echo 'select your keyboard lenguage'
   echo KEYMAP=es > /etc/vconsole.conf
   echo keyboard succesfull configured
   sleep 1
@@ -100,19 +99,12 @@ else
   echo create a root passwd
   passwd
   clear
-  echo ""
-  echo "Bootloader (grub)"
-  echo ""
-  sleep 2
-  pacman -Sy grub efibootmgr
+  echo "GRUB install"
+  pacman -Sy --noconfirm grub efibootmgr
   grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
   mkdir /boot/grub
   grub-mkconfig -o /boot/grub/grub.cfg
-  sleep 3
-  echo ""
-  echo "Grub installed"
-  sleep 2
-  pacman -S networkmanager sudo nano
+  pacman -S --noconfirm networkmanager sudo nano
   systemctl enable NetworkManager
   sleep 2
   clear
