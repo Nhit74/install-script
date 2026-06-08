@@ -1,11 +1,10 @@
 #!/bin/bash
-
 echo INSTALL_ARCH
 echo ""
 echo "select if you are in chroot or not"
-echo 1- NO chroot
-echo 2- chroot
-read -p "Chose one or two: " place
+echo "[ 1 ] NO chroot"
+echo "[ 2 ] chroot"
+read -p "Tyrpe "1" or "2", then press enter: " place
 if [ "$place" -eq 1 ]
 then
   timedatectl
@@ -18,8 +17,8 @@ then
   echo 'do you want a swap partition?'
   echo 1- yes
   echo 2- no
-  read -p "Type 1 or 2: " swap
-  if [ "$swap" -eq 1 ]
+  read -p "Type y or N, then pres enter: " swap
+  if [ "$swap" == "y" ]
   then
     read -p "Where is your swap partition? " swap_route
     mkswap $swap_route
@@ -59,60 +58,59 @@ then
   echo 'run the script another time'
   sleep 2
   arch-chroot /mnt
+elif [ "$place" -eq 2 ]
+then
+  echo 'wellcome to arch-chroot'
+  echo 'select your area and location'
+  read -p "Area: " area
+  read -p "Location: " loaction
+  ln -sf /usr/share/zoneinfo/$area/$loaction /etc/localtime
+  hwclock --systohc
+  echo 'time succesfuly selected'
+  sleep 1
+  clear
+  locale-gen
+  echo 'select your locales'
+  echo "es_ES.UTF-8"
+  echo "ca_ES.UTF-8"
+  read -p "type your locale: " locale
+  echo LANG=$locale > /etc/locale.conf
+  sleep 3
+  echo "select your keyboard lenguage"
+  read -p "keyboard: " keys
+  echo KEYMAP=$keys > /etc/vconsole.conf
+  echo "keyboard succesfull configured"
+  sleep 1
+  clear
+  read -p "type your hostname: " host
+  echo $host > /etc/hostname
+  echo create a root passwd
+  passwd
+  clear
+  echo ""
+  echo "Bootloader (grub)"
+  echo ""
+  sleep 2
+  pacman -S --noconfirm grub efibootmgr
+  grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
+  mkdir /boot/grub
+  grub-mkconfig -o /boot/grub/grub.cfg
+  sleep 3
+  echo ""
+  echo "Grub installed"
+  sleep 2
+  echo "Do you want networkmanager, sudo and nano? "
+  read -p "Type y or N, then pres enter: " soft
 fi
-echo 'wellcome to arch-chroot'
-echo 'select your area and location'
-read -p "Area: " area
-read -p "Location: " loaction
-ln -sf /usr/share/zoneinfo/$area/$loaction /etc/localtime
-hwclock --systohc
-echo 'time succesfuly selected'
-sleep 1
-clear
-locale-gen
-echo 'select your locales'
-echo "es_ES.UTF-8"
-read -p "type your locale: " locale
-echo LANG=$locale >> /etc/locale.conf
-sleep 3
-echo "select your keyboard lenguage"
-read -p "keyboard: " keys
-echo KEYMAP=$keys > /etc/vconsole.conf
-echo "keyboard succesfull configured"
-sleep 1
-clear
-read -p "type your hostname: " host
-echo $host > /etc/hostname
-echo create a root passwd
-passwd
-clear
-echo ""
-echo "Bootloader (grub)"
-echo ""
-sleep 2
-pacman -S --noconfirm grub efibootmgr
-grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
-mkdir /boot/grub
-grub-mkconfig -o /boot/grub/grub.cfg
-sleep 3
-echo ""
-echo "Grub installed"
-sleep 2
-echo "Recomended software"
-echo 1- networkmanager sudo nano
-echo 2- no more software
-read -p "Chose one option: " soft
-if [ "$soft" -eq 1 ]
+if [ "$soft" == "y" ]
 then
   pacman -S --noconfirm networkmanager sudo nano
   systemctl enable NetworkManager
 fi
 clear
-echo "Please create a user"
-echo 1- "Yes, I want a user."
-echo 2- "No, I don't want a user"
-read -p "Chose one or two: " YoN
-if [ "$YoN" -eq 1 ]
+echo "Do you want a user?"
+read -p "Type y or N, then pres enter: " YoN
+if [ "$YoN" == "y" ]
 then
   read -p "Username: " user
   useradd -m -s /bin/bash $user
@@ -121,10 +119,8 @@ then
   echo "Now you have arch linux! Exit chroot and reboot."
   clear
   echo "Do you want to be sudoer?"
-  echo 1- "Yes, I want to be sudoer."
-  echo 2- "No, I don't want to be sudoer."
-  read -p "Chose one or two: " SU
-  if [ "$SU" -eq 1 ]
+  read -p "Type y or N, then pres enter: " SU
+  if [ "$SU" == "y" ]
   then
     usermod -aG wheel $user
     echo "%wheel ALL=(ALL:ALL) ALL" > /etc/sudoers.d/wheel

@@ -1,58 +1,62 @@
 #!/bin/bash
-
 echo INSTALL_ARCH
 echo ""
-echo "select if you are in chroot or not"
-echo 1- NO chroot
-echo 2- chroot
-read -p "Chose one or two: " place
-if [ "$place" -eq 1 ]
+echo "Select if you are in arch-chroot or in the main root."
+echo "[ 1 ] NO chroot"
+echo "[ 2 ] chroot"
+read -p "Tyrpe "1" or "2", then press enter: " place
+if [ "$place" -eq 1 ] || [ "$place" -eq 2 ]
 then
-  if [ -d /sys/firmware/efi ]
+  if [ "$place" -eq 1 ]
   then
-    timedatectl
-    lsblk
-    read -p "Select the media for make partitions: " media
-    fdisk $media
-    lsblk
-    read -p "Select your boot partition: " boot
-    read -p "Select your Linux partition: " linux
-    mkfs.fat -F 32 $boot
-    mkfs.ext4 $linux
-    echo 'Format done'
-    lsblk
-    read -p "Press any key..." sahjad
-    clear
-    echo "Mounting the sistem"
-    mount $linux /mnt
-    mount --mkdir $boot /mnt/boot
-    echo "Syestem mounted"
-    echo "Select your mirrors"
-    sleep 2
-    nano /etc/pacman.d/mirrorlist
-    echo "Mirrors selected"
-    pacstrap -K /mnt base linux linux-firmware
-    echo "Base sistem installed"
-    sleep 2
-    genfstab -U /mnt >> /mnt/etc/fstab
-    echo "fstab created remeaber to check it"
-    cp FastSetup.sh  /mnt/FastSetup.sh
-    chmod +x /mnt/FastSetup.sh
-    echo 'run the script another time'
-    sleep 2
-    arch-chroot /mnt
-  else
-  echo "You are in legacy mode, change to uefi into the firmware"
-  read -p "Press any key..." jsbdsa
-  echo "[ 1 ] Reboot"
-  echo "[ 2 ] Shutdown"
-  read -p "Choose an option: " option
-  if [ "$option" -eq 1 ]
-  then
-    reboot
-  elif [ "$option" -eq 2 ]
-  then
-    shutdown -h now
+    if [ -d /sys/firmware/efi ]
+    then
+      timedatectl
+      lsblk
+      read -p "Select the media for make partitions: " media
+      fdisk $media
+      lsblk
+      read -p "Select your boot partition: " boot
+      read -p "Select your Linux partition: " linux
+      mkfs.fat -F 32 $boot
+      mkfs.ext4 $linux
+      echo 'Format done'
+      lsblk
+      read -p "Press any key..." sahjad
+      clear
+      echo "Mounting the sistem"
+      mount $linux /mnt
+      mount --mkdir $boot /mnt/boot
+      echo "Syestem mounted"
+      echo "Select your mirrors"
+      sleep 2
+      nano /etc/pacman.d/mirrorlist
+      echo "Mirrors selected"
+      pacstrap -K /mnt base linux linux-firmware linux-headers
+      echo "Base sistem installed"
+      sleep 2
+      genfstab -U /mnt >> /mnt/etc/fstab
+      echo "fstab created remeaber to check it"
+      cp FastSetup.sh  /mnt/FastSetup.sh
+      chmod +x /mnt/FastSetup.sh
+      echo 'run the script another time'
+      sleep 2
+      arch-chroot /mnt
+    else
+      echo "You are in legacy mode, change to uefi into the firmwaresettings"
+      echo "For now the script don't suports BIOS legacy. It's just for UEFI systems"
+      read -p "Press any key..." jsbdsa
+      echo "[ 1 ] Reboot"
+      echo "[ 2 ] Shutdown"
+      read -p "Choose an option: " err_firmMode
+      if [ "$err_firmMode" -eq 1 ]
+      then
+        reboot
+      elif [ "$err_firmMode" -eq 2 ]
+      then
+        shutdown now
+      fi
+    fi
   fi
 fi
 echo 'wellcome to arch-chroot'
@@ -62,7 +66,7 @@ echo 'time succesfuly selected'
 sleep 1
 clear
 locale-gen
-echo LANG=es_ES.UTF-8 >> /etc/locale.conf
+echo LANG=es_ES.UTF-8 > /etc/locale.conf
 sleep 3
 echo 'select your keyboard lenguage'
 echo KEYMAP=es > /etc/vconsole.conf
