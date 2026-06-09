@@ -28,10 +28,9 @@ then
       mount $linux /mnt
       mount --mkdir $boot /mnt/boot
       echo "Syestem mounted"
-      echo "Select your mirrors"
-      sleep 2
-      nano /etc/pacman.d/mirrorlist
+      reflector --country Spain --latest 10 --sort rate --save /etc/pacman.d/mirrorlist
       echo "Mirrors selected"
+      sleep 2
       pacstrap -K /mnt base linux linux-firmware linux-headers
       echo "Base sistem installed"
       sleep 2
@@ -65,12 +64,11 @@ hwclock --systohc
 echo 'time succesfuly selected'
 sleep 1
 clear
-locale-gen
 echo LANG=es_ES.UTF-8 > /etc/locale.conf
+locale-gen
 sleep 3
-echo 'select your keyboard lenguage'
 echo KEYMAP=es > /etc/vconsole.conf
-echo keyboard succesfull configured
+echo keyboard succesfully configured
 sleep 1
 clear
 echo Autoarch > /etc/hostname
@@ -81,7 +79,7 @@ echo ""
 echo "Bootloader (grub)"
 echo ""
 sleep 2
-pacman -Sy grub efibootmgr
+pacman -S grub efibootmgr
 grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
 mkdir /boot/grub
 grub-mkconfig -o /boot/grub/grub.cfg
